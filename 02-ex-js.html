@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="info"></div>
+        <div class="record"></div>
+
+        <input type="text" class="enterContent" />
+        <input type="submit" class="btn" value="確定" />
+
+        <script>
+            //1. 1-100的亂數 ok
+            //2. 只能猜5次 ok
+            //3. 猜到顯示獲勝訊息,可選擇重玩 ok
+            //4. 猜錯還有次數的話,可以繼續 ok
+            //5. 猜錯如果沒次數了,可以選擇重玩 ok
+            //6. 讓玩家知道當前猜的數字太高或太低 ok
+            //7. 記錄每回合猜過的數字 ok
+            //8. 猜到或者失敗後給一個重玩的按鈕 ok
+            //9. 重來後回歸一開始的狀態 ok
+
+            const info = document.querySelector(".info");
+            const record = document.querySelector(".record");
+            const enterContent = document.querySelector(".enterContent");
+            const btn = document.querySelector(".btn");
+            let randomNumber = 1 + Math.floor(Math.random() * 100);
+            let start = 1;
+            btn.addEventListener("click", function () {
+                let guessNumber = Number(enterContent.value);
+                record.innerHTML += guessNumber + " ";
+                if (randomNumber === guessNumber) {
+                    info.innerHTML = "恭喜獲勝";
+
+                    gameOver();
+                } else if (start === 5) {
+                    info.innerHTML = "遊戲結束";
+
+                    gameOver();
+                } else {
+                    randomNumber > guessNumber
+                        ? (info.innerHTML = "太小了")
+                        : (info.innerHTML = "太大了");
+                }
+                start++;
+            });
+
+            function gameOver() {
+                reBtn = document.createElement("button");
+                document.body.appendChild(reBtn);
+                reBtn.innerHTML = "再玩一次";
+                btn.disabled = true;
+                reBtn.addEventListener("click", reGame);
+            }
+
+            function reGame() {
+                btn.disabled = false;
+                document.body.removeChild(reBtn);
+                start = 1;
+                info.innerHTML = "";
+                record.innerHTML = "";
+                enterContent.value = "";
+                // 這個輸入欄要用值去清除
+                randomNumber = 1 + Math.floor(Math.random() * 100);
+            }
+        </script>
+    </body>
+</html>
