@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .test {
+                background-color: rgba(211, 12, 12, 0.904);
+                position: relative;
+            }
+            .test::after {
+                content: "";
+                display: block;
+                background-color: #eee;
+                width: 500px;
+                height: 250px;
+                border-radius: 0 0 500px 500px;
+                position: absolute;
+                bottom: 0;
+            }
+            body {
+                background-image: url(images/background1.jpg);
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const test = document.createElement("div");
+            document.body.appendChild(test);
+            test.className = "test";
+            test.style.width = "500px";
+            test.style.height = "500px";
+            test.style.textAlign = "center";
+            test.style.borderRadius = "50%";
+            test.innerHTML = `<img src="images/1.png"></img>`;
+            const img = document.querySelector("img");
+
+            test.addEventListener("click", function () {
+                const btn = document.createElement("button");
+                img.style.transform = "translate(500px,250px)";
+                test.style.backgroundColor = "#333";
+                document.body.appendChild(btn);
+                btn.innerHTML = "回來吧";
+
+                btn.addEventListener("click", function () {
+                    test.style.backgroundColor = "rgba(211, 12, 12, 0.904)";
+                    img.style.transform = "translate(0px)";
+                    // 從DOM移除一個子節點
+                    document.body.removeChild(btn);
+                });
+            });
+        </script>
+    </body>
+</html>
