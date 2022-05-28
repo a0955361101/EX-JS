@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style class="style">
+            * {
+                box-sizing: border-box;
+            }
+            .cardWrap {
+                display: flex;
+            }
+            .card {
+                width: 300px;
+                height: 350px;
+                border: 1px solid #333;
+                background-color: #eee;
+                border-radius: 10px;
+                margin: 50px 10px 0;
+            }
+            .cardPic {
+                border-bottom: 1px solid #333;
+                text-align: center;
+                width: 100%;
+                height: 250px;
+            }
+            .cardPic > img {
+                width: 80%;
+            }
+
+            .cardTxt {
+                text-align: center;
+            }
+
+            .txt-box {
+                width: 40px;
+                height: 25px;
+                border: 1px solid #333;
+                border-radius: 10px;
+                background-color: #fa0;
+            }
+            .txt-box > p {
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="text" placeholder="搜尋" class="search" />
+        <div class="cardWrap">
+            <!-- <div class="card">
+                <div class="cardPic">
+                    <div class="txt-box"><p>入門</p></div>
+                    <img src="images/heart.png" alt="" />
+                </div>
+                <div class="cardTxt">
+                    <h3 class="cardTitle">愛心拉花</h3>
+                    <p class="cardPrice">NT$900</p>
+                </div>
+            </div> -->
+        </div>
+
+        <script>
+            const cardWrap = document.querySelector(".cardWrap");
+            const style = document.querySelector(".style");
+            const search = document.querySelector(".search");
+
+            const arrName = [
+                "愛心拉花",
+                "種子拉花",
+                "火龍拉花",
+                "皮神拉花",
+                "傑尼拉花",
+                "紅心拉花",
+            ];
+            const arrSrc = [
+                "images/heart.png",
+                "images/1.png",
+                "images/2.png",
+                "images/3.png",
+                "images/4.png",
+                "images/heart.png",
+            ];
+            const arrPrice = [900, 1500, 1500, 2000, 1500, 900];
+            const arrLevel = ["入門", "中級", "中級", "高級", "中級", "入門"];
+
+            const ar = [
+                {
+                    src: "images/heart.png",
+                    name: "愛心拉花",
+                    price: 900,
+                    level: "入門",
+                },
+                {
+                    src: "images/1.png",
+                    name: "種子拉花",
+                    price: 1500,
+                    level: "中級",
+                },
+                {
+                    src: "images/2.png",
+                    name: "火龍拉花",
+                    price: 1500,
+                    level: "中級",
+                },
+                {
+                    src: "images/3.png",
+                    name: "皮神拉花",
+                    price: 2000,
+                    level: "高級",
+                },
+                {
+                    src: "images/4.png",
+                    name: "傑尼拉花",
+                    price: 1500,
+                    level: "中級",
+                },
+                {
+                    src: "images/heart.png",
+                    name: "紅心拉花",
+                    price: 900,
+                    level: "入門",
+                },
+            ];
+
+            for (let i = 0; i < ar.length; i++) {
+                cards = document.createElement("div");
+                cards.className = "card";
+                //這裡是關鍵把每個物件裡面的name直接套給各自的卡片當index
+                cards.dataset.index = ar[i].name;
+                cardWrap.appendChild(cards);
+                cards.innerHTML = ` <div class="cardPic">
+                    <div class="txt-box"><p>${ar[i].level}</p></div>
+                    <img src=${ar[i].src} alt="" />
+                </div>
+                <div class="cardTxt">
+                    <h3 class="cardTitle">${ar[i].name}</h3>
+                    <p class="cardPrice">NT$${ar[i].price}</p>
+                </div>`;
+                txtBox = document.querySelectorAll(".txt-box");
+
+                if (ar[i].level === "高級") {
+                    txtBox[i].style.backgroundColor = "#f00";
+                }
+                if (ar[i].level === "入門") {
+                    txtBox[i].style.backgroundColor = "#3CB371";
+                }
+            }
+
+            // input事件(value 被修改時觸發 )
+            search.addEventListener("input", () => {
+                // 清空時+回display:block,讓所有卡片都顯示
+                if (search.value === "") {
+                    style.innerHTML +=
+                        '.card:not([data-index*="' +
+                        search.value +
+                        '"]){display:block;}';
+                }
+                ar.forEach(function (v, i) {
+                    // 把ar.name裡面的關鍵字切割 丟給ar2
+                    ar2 = ar[i].name.split("");
+
+                    ar2.forEach(function (v, i) {
+                        //ar2現在是我的索引的每一個字,由此做搜尋判斷
+                        if (search.value === ar2[i])
+                            // 這邊的概念是直接去修改style裡面的內容,
+                            //所以要是直接使用 = 的話會使全部的css都會消失,
+                            //使用+=達成後蓋前的方式.
+
+                            //:not()是一種偽類選擇器,這裡用來判斷是否套用display:none
+                            //這邊的用法是:not()去篩選關鍵字,關鍵字以外的全none
+                            style.innerHTML +=
+                                '.card:not([data-index*="' +
+                                search.value +
+                                '"]){display:none;}';
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
