@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .container {
+                overflow: hidden;
+                width: 600px;
+                height: 300px;
+                position: relative;
+            }
+
+            #list {
+                width: 6000px;
+            }
+
+            img {
+                width: 600px;
+                height: 300px;
+                transform: translateX(0px);
+            }
+
+            .arrow {
+                position: absolute;
+            }
+            #next {
+                top: 50%;
+                right: 0;
+                text-decoration: none;
+                font-size: 2rem;
+                color: black;
+                background-color: #888;
+                opacity: 0.8;
+            }
+            #prev {
+                top: 50%;
+                left: 0;
+                text-decoration: none;
+                font-size: 2rem;
+                color: black;
+                background-color: #888;
+                opacity: 0.8;
+            }
+
+            .on {
+                width: 25px;
+                height: 25px;
+                background-color: #888;
+                display: block;
+                border-radius: 50%;
+                opacity: 0.8;
+                margin: 0 10px;
+            }
+
+            .buttons {
+                position: absolute;
+                bottom: 0;
+                display: flex;
+                left: 40%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div id="list">
+                <!-- <img src="img/5.png" alt="1" /> -->
+                <img src="images/background1.jpg" alt="1" />
+                <img src="images/background2.jpg" alt="2" />
+                <img src="images/background3.jpg" alt="3" />
+                <!-- <img src="img/4.png" alt="4" /> -->
+                <!-- <img src="img/5.png" alt="5" /> -->
+                <!-- <img src="img/1.png" alt="5" /> -->
+            </div>
+            <div class="buttons">
+                <span index="0" class="on on-1"></span>
+                <span index="1" class="on on-2"></span>
+                <span index="2" class="on on-3"></span>
+                <!-- <span index="4"></span> -->
+                <!-- <span index="5"></span> -->
+            </div>
+            <a href="javascript:;" id="prev" class="arrow">&lt;</a>
+            <a href="javascript:;" id="next" class="arrow">&gt;</a>
+        </div>
+
+        <script>
+            const next = document.querySelector("#next");
+            const prev = document.querySelector("#prev");
+            const container = document.querySelector(".container");
+            const imgs = document.querySelectorAll("img");
+            const ons = document.querySelectorAll(".on");
+
+            const imgMove = -600;
+            let start = 1;
+            let end = imgs.length;
+
+            next.addEventListener("click", function () {
+                // 遍歷所有照片
+                imgs.forEach(function (v) {
+                    // 這裡判斷照片數是否超過總照片的長度,如果超過的話回第一張
+                    if (start === imgs.length) {
+                        v.style.transform = `translateX(0px)`;
+                        start = 0; // 回到第0張照片
+                    } else {
+                        // 用照片固定寬度 * 上點擊n張照片的倍數
+                        v.style.transform = `translateX(${imgMove * start}px)`;
+                    }
+                });
+                start++;
+            });
+
+            prev.addEventListener("click", function () {
+                start--;
+                imgs.forEach(function (v) {
+                    let transform = v.style.transform;
+
+                    if (start === 0) {
+                        v.style.transform = `translateX(${
+                            // 第0張照片要再往左的話 固定寬度 * 上imgs長度,因為起始是1所以多扣一張照片寬度
+                            imgMove * end - imgMove
+                        }px)`;
+                        start = 3;
+                        // 回到最後一張照片
+                    } else {
+                        // 事件一開始的時候就先減少倍數,然後這裡用倍數再去*固定寬度,達到回上一張的效果(需要再減1因為我的起始是從第一張照片開始不是0)
+                        v.style.transform = `translateX(${
+                            imgMove * start - imgMove
+                        }px)`;
+                    }
+                });
+            });
+
+            // 點擊後依照索引回到該張圖
+            for (let i = 0; i < ons.length; i++) {
+                (function (i) {
+                    ons[i].addEventListener("click", function () {
+                        //拿到自己給的屬性index,轉成數字
+                        let clickIndex = parseInt(this.getAttribute("index"));
+                        // 固定寬度 * index
+                        let offset = imgMove * clickIndex;
+                        for (let k = 0; k < imgs.length; k++) {
+                            imgs[k].style.transform = `translateX(${offset}px)`;
+                            start = clickIndex + 1; //因為index起始是0所以+1
+                        }
+                    });
+                })(i);
+            }
+        </script>
+    </body>
+</html>
