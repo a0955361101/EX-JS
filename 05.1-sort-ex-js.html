@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style class="style">
+            * {
+                box-sizing: border-box;
+            }
+            .cardWrap {
+                display: flex;
+            }
+            .card {
+                width: 300px;
+                height: 350px;
+                border: 1px solid #333;
+                background-color: #eee;
+                border-radius: 10px;
+                margin: 50px 10px 0;
+            }
+            .cardPic {
+                border-bottom: 1px solid #333;
+                text-align: center;
+                width: 100%;
+                height: 250px;
+            }
+            .cardPic > img {
+                width: 80%;
+            }
+
+            .cardTxt {
+                text-align: center;
+            }
+
+            .txt-box {
+                width: 40px;
+                height: 25px;
+                border: 1px solid #333;
+                border-radius: 10px;
+                background-color: #fa0;
+            }
+            .txt-box > p {
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <select name="" id="sort">
+            <option value="">--排序--</option>
+            <option value="priceAsc">價格低至高</option>
+            <option value="priceDesc">價格高至低</option>
+            <option value="levelAsc">難度低至高</option>
+            <option value="levelDesc">難度高至低</option>
+        </select>
+        <div class="cardWrap">
+            <!-- <div class="card">
+                <div class="cardPic">
+                    <div class="txt-box"><p>入門</p></div>
+                    <img src="images/heart.png" alt="" />
+                </div>
+                <div class="cardTxt">
+                    <h3 class="cardTitle">愛心拉花</h3>
+                    <p class="cardPrice">NT$900</p>
+                </div>
+            </div> -->
+        </div>
+
+        <script>
+            const cardWrap = document.querySelector(".cardWrap");
+            const mySort = document.querySelector("#sort");
+            let easy = 0;
+            let normal = 1;
+            let hard = 2;
+
+            const ar = [
+                {
+                    src: "images/heart.png",
+                    name: "愛心拉花",
+                    price: 900,
+                    level: easy,
+                },
+                {
+                    src: "images/1.png",
+                    name: "種子拉花",
+                    price: 1500,
+                    level: normal,
+                },
+                {
+                    src: "images/2.png",
+                    name: "火龍拉花",
+                    price: 1500,
+                    level: normal,
+                },
+                {
+                    src: "images/3.png",
+                    name: "皮神拉花",
+                    price: 2000,
+                    level: hard,
+                },
+                {
+                    src: "images/4.png",
+                    name: "傑尼拉花",
+                    price: 1500,
+                    level: normal,
+                },
+                {
+                    src: "images/heart.png",
+                    name: "紅心拉花",
+                    price: 1600,
+                    level: easy,
+                },
+            ];
+
+            // a-b 結果為負時對調
+            function priceAsc(a, b) {
+                return a.price - b.price;
+            }
+
+            function priceDesc(a, b) {
+                return b.price - a.price;
+            }
+
+            function levelAsc(a, b) {
+                return a.level - b.level;
+            }
+
+            function levelDesc(a, b) {
+                return b.level - a.level;
+            }
+
+            mySort.addEventListener("change", function () {
+                if (mySort.value === "priceAsc") {
+                    ar.sort(priceAsc);
+                } else if (mySort.value === "priceDesc") {
+                    ar.sort(priceDesc);
+                } else if (mySort.value === "levelAsc") {
+                    ar.sort(levelAsc);
+                } else if (mySort.value === "levelDesc") {
+                    ar.sort(levelDesc);
+                }
+                print();
+            });
+
+            print = () => {
+                cardWrap.innerHTML = "";
+                for (let i = 0; i < ar.length; i++) {
+                    cards = document.createElement("div");
+                    cards.className = "card";
+                    cards.dataset.index = ar[i].name;
+                    cardWrap.appendChild(cards);
+                    cards.innerHTML = ` <div class="cardPic">
+                    <div class="txt-box"><p>${ar[i].level}</p></div>
+                    <img src=${ar[i].src} alt="" />
+                </div>
+                <div class="cardTxt">
+                    <h3 class="cardTitle">${ar[i].name}</h3>
+                    <p class="cardPrice">NT$${ar[i].price}</p>
+                </div>`;
+                    txtBox = document.querySelectorAll(".txt-box");
+
+                    if (ar[i].level === 2) {
+                        txtBox[i].style.backgroundColor = "#f00";
+                    }
+                    if (ar[i].level === 0) {
+                        txtBox[i].style.backgroundColor = "#3CB371";
+                    }
+                    if (ar[i].level === 0) {
+                        txtBox[i].innerHTML = "入門";
+                    }
+                    if (ar[i].level === 1) {
+                        txtBox[i].innerHTML = "中級";
+                    }
+                    if (ar[i].level === 2) {
+                        txtBox[i].innerHTML = "高級";
+                    }
+                }
+            };
+            print();
+        </script>
+    </body>
+</html>
